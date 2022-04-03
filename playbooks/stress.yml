@@ -1,0 +1,12 @@
+---
+- hosts: testbed
+  become: true
+  tasks:
+    - name: install stress
+      apt:
+        name: stress
+        state: present
+        update_cache: true
+
+    - name: stress
+      shell: stress --cpu 8 --timeout 20s
