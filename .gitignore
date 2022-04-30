@@ -13,3 +13,8 @@
 # Certificates
 *.crt
 *.key
+
+#Python
+/venv
+
+/.idea

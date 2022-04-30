@@ -35,11 +35,14 @@ EOF
   end
 
   config.vm.define "vm1" do |h|
-    h.memory = 0.500
-    h.cpus = 1
     h.vm.hostname = "vm1"
     h.vm.network "private_network", ip: "192.168.56.101"
     h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'
+    #h.vm.provision :--provision, "file", source: "../playbooks/roles/testbed/files/watcher.py", destination: "~/" 
+    
+    h.vm.provider "vm1" do |c|
+      c.memory = 0.500
+      c.cpus = 1
+    end
   end
-
 end
