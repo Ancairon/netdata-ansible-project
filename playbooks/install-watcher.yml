@@ -2,15 +2,15 @@
 - hosts: testbed
   become: true 
   tasks:
-    # - name: install pip
-    #   apt:
-    #     name: python3-pip
-    #     state: present
-    #     update_cache: true
 
-    # - name: install python dependencies
-    #   pip: 
-    #     name: sudo pip install requests, numpy, matplotlib
+    - name: install requests
+      pip: 
+        name: requests
+    
+
+    - name: install scipy
+      pip: 
+        name: scipy
 
     - name: example copying file with owner and permissions
       copy:

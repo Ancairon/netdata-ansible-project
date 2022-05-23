@@ -1,0 +1,31 @@
+---
+- hosts: testbed
+  become: true 
+  tasks:
+    - name: install pip
+      apt:
+        name: python3-pip
+        state: present
+        update_cache: false
+
+    - name: install libmariadb3
+      apt:
+        name: libmariadb3 
+        state: present
+        update_cache: false
+
+    - name: install libmariadb-dev
+      apt:
+        name: libmariadb-dev
+        state: present
+        update_cache: false
+
+    - name: install python dependencies
+      pip: 
+        name: mariadb
+
+    - name: example copying file with owner and permissions
+      copy:
+        src: dbtest.py
+        dest: /home/vagrant/dbtest.py
+        mode: 0644
