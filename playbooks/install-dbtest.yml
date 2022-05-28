@@ -6,7 +6,7 @@
       apt:
         name: python3-pip
         state: present
-        update_cache: false
+        update_cache: true
 
     - name: install libmariadb3
       apt:
