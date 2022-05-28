@@ -47,9 +47,9 @@ def buggyJob():
 counter = 0
 k = 0
 
-for k in range(0, 50):
+for k in range(0, 500):
     
-    if (k % random.randint(1, 10) == 0):
+    if (k % random.randint(1, 10) == 0 and k > 20):
         buggyJob()
         counter += 1
     else:
