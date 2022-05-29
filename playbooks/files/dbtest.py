@@ -25,9 +25,9 @@ def normalJob():
 
     cur.execute("SELECT first_name, last_name FROM employees")
 
-    for (first_name, last_name) in cur:
-        print(f"First Name: {first_name}, Last Name: {last_name}")
-
+    # for (first_name, last_name) in cur:
+    #     print(f"First Name: {first_name}, Last Name: {last_name}")
+    print("going fine")
 
 def buggyJob():
     # for i in range(0, 5):
@@ -47,9 +47,14 @@ def buggyJob():
 counter = 0
 k = 0
 
-for k in range(0, 500):
+for i in range(0, 30):
+    normalJob()
+
+print("Switchin")
+
+for k in range(0, 100):
     
-    if (k % random.randint(1, 10) == 0 and k > 20):
+    if (k % random.randint(1, 10) == 0 and k > 5):
         buggyJob()
         counter += 1
     else:

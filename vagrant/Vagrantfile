@@ -39,7 +39,6 @@ EOF
     h.vm.network "private_network", ip: "192.168.56.101"
     h.vm.provision :shell, inline: 'cat /vagrant/control.pub >> /home/vagrant/.ssh/authorized_keys'    
     h.vm.provider "vm1" do |c|
-      c.memory = 0.500
       c.cpus = 1
     end
   end
