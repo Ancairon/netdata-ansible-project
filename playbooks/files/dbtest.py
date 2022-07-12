@@ -1,5 +1,6 @@
 # Module Imports
 import random
+import time
 from time import sleep
 import mariadb
 import sys
@@ -29,12 +30,14 @@ def normalJob():
     #     print(f"First Name: {first_name}, Last Name: {last_name}")
     print("going fine")
 
+
 def buggyJob():
     # for i in range(0, 5):
 
     try:
         conn = mariadb.connect(user="root",
                                password="pass",
+                            #    wrong IP as a bug
                                host="192.168.1.61",
                                port=3306,
                                database="employees")
@@ -44,20 +47,25 @@ def buggyJob():
     return
 
 
-counter = 0
-k = 0
+while(True):
 
-for i in range(0, 30):
-    normalJob()
+    counter = 0
+    k = 0
 
-print("Switchin")
+    timeSwitch = time.time() + 5 * 60
 
-for k in range(0, 100):
-    
-    if (k % random.randint(1, 10) == 0 and k > 5):
-        buggyJob()
-        counter += 1
-    else:
+    while (time.time() <= timeSwitch):
         normalJob()
 
-print("Bugged:",counter, "times")
+    print("Switching")
+
+    for k in range(0, 200):
+        print(timeSwitch/time.time())
+        if (timeSwitch/time.time()==0):
+            buggyJob()
+            sleep(5)
+            counter += 1
+        else:
+            normalJob()
+
+    print("Bugged:", counter, "times")
