@@ -1,6 +1,0 @@
----
-- hosts: testbed
-  become: true
-  tasks:
-    - name: install netdata
-      shell: wget -O /tmp/netdata-kickstart.sh https://my-netdata.io/kickstart.sh && sh /tmp/netdata-kickstart.sh --claim-token B-SThPKWJZaUkqVo2MnyWheNvkmt-lYh66c9XX9pteESbZMr9G5XjCJ7P3tMHXRvVI76QBbwGAS7vKb0ia2M4yx_PmL2GI1gblXIBDo_XgUi1AidJdlQ2u5njMoh_2e3RTTqurU --claim-rooms 57d6a042-51ce-4b5e-a7f2-d9477d3a2291 --claim-url https://app.netdata.cloud --dont-wait

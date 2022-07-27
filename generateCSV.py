@@ -26,13 +26,13 @@ def getDataFromAPI(ip, chart, dimension, timeStepsBack=5):
     return json_dump(a, "a.json")
 
 
-getDataFromAPI("192.168.1.60", "system.cpu", "user", 5*60)
+getDataFromAPI("192.168.1.60", "system.cpu", "user", 60*60)
 
 pdObj = pd.read_json("a.json")
 pdObj.to_csv("server.csv")
 
 
-getDataFromAPI("192.168.1.61", "system.cpu", "user", 5*60)
+getDataFromAPI("192.168.1.61", "system.cpu", "user", 60*60)
 
 pdObj = pd.read_json("a.json")
 pdObj.to_csv("client.csv")
