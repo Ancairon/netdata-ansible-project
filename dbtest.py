@@ -3,14 +3,11 @@ import random
 import time
 from time import sleep
 import tqdm
-from tokenize import endpats
-# import mysql
 import MySQLdb as mysql
 
 
 def normalJob(seed):
     work()
-    #for i in range(0, 1):
     try:
         conn = mysql.connect(user="root",
                              password="pass",
@@ -19,7 +16,6 @@ def normalJob(seed):
                              database="employees")
     except mysql.Error as e:
         print(f"Error connecting to mysql Platform: {e}")
-        #continue
         return
 
     # Get Cursor
@@ -53,15 +49,12 @@ def normalJob(seed):
                 "select last_name, emp_no from employees  where emp_no % 3 = 0;")
         case 9:
             cur.execute(
-                "select * from employees where last_name like '%"+"a"+"%';")
+                "select * from employees where last_name like '%" + "a" + "%';")
 
-    # for (first_name, last_name) in cur:
-    #     print(f"First Name: {first_name}, Last Name: {last_name}")
     print("going fine")
 
 
 def buggyJob(seed=2):
-    # for i in range(0, 5):
     work()
     match seed:
         case 0:
@@ -131,18 +124,14 @@ def work():
     print("Done working, querying now...")
 
 
-endTime = time.time() + 5 * 60
-
 counter = 0
-
 timestamps = []
 
-while(time.time() != endTime):
+while (True):
 
     timeSwitch = time.time() + 30
 
     while (time.time() <= timeSwitch):
-
         normalJob(random.randint(0, 9))
 
     print("Switching")
@@ -151,11 +140,10 @@ while(time.time() != endTime):
         if (random.randint(0, 10) == 5):
 
             timestamps.append(time.strftime("%H:%M:%S", time.localtime()))
-            print(timestamps)
+            print(timestamps, len(timestamps))
             buggyJob(random.randint(0, 3))
+            # After an anomaly the program sleeps for 40 seconds as a means of recovery
             sleep(40)
             counter += 1
         else:
             normalJob(random.randint(0, 9))
-
-print("Bugged:", counter, "times")

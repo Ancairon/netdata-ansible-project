@@ -1,4 +1,3 @@
-import bz2
 import numpy as np
 import datetime
 import pandas
@@ -61,8 +60,6 @@ class CompressionBasedDissimilarity(object):
 
 #     last_metrics.reverse()
 #     return last_metrics
-"""
-
 
 def calc_correlation(actual, predic):
     a_diff = actual - np.mean(actual)
@@ -73,8 +70,9 @@ def calc_correlation(actual, predic):
     if math.isnan(numerator / denominator):
         return -2
     return numerator / denominator
+"""
 
-
+# Get the timeseries from the csv files
 server = pandas.read_csv("server.csv", names=['row', 'timestamp', 'data'])
 client = pandas.read_csv("client.csv", names=['row', 'timestamp', 'data'])
 
@@ -82,7 +80,9 @@ i = 0
 result = []
 counter = 0
 
+# Iterate the timeseries
 while i < client.count()[0] - 1:
+    # Make two dummy arrays to pass them into the test
     a = []
     for k in range(i, i + 2):
         a.append(server.data[k])
@@ -91,13 +91,17 @@ while i < client.count()[0] - 1:
     for k in range(i, i + 2):
         b.append(client.data[k])
 
+    # Do a ttest against the two timeseries
     t_value, p_value = sp.ttest_ind(a, b)
-
+    # We have a strict alpha (1-a = 99%)
     alpha = 0.01
 
+    # If the two timeseries are similar we are going to check a few steps ahead and if we have again a similarity,
+    # then we are clear to report an anomaly
     if p_value > alpha:
+        # We seek 4 steps ahead
         j = i + 4
-
+        # Dummy arrays
         a = []
         for k in range(j, j + 2):
             a.append(server.data[k])
@@ -106,10 +110,11 @@ while i < client.count()[0] - 1:
         for k in range(j, j + 2):
             b.append(client.data[k])
 
+        # Do the test again
         t_value, p_value = sp.ttest_ind(a, b)
+        # If we still have a similarity then we report the anomaly
         if p_value > alpha:
-            print("\n\nANOMALY ",
-                  datetime.datetime.fromtimestamp(server.timestamp[i + 1]))
+            print("\n\nANOMALY ", datetime.datetime.fromtimestamp(server.timestamp[i + 1]))
             print("p_value = ", p_value)
             print("SERVER", a, "CLIENT", b, "\n\n")
             counter += 1
