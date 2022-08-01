@@ -59,12 +59,12 @@ def buggyJob(seed=2):
     match seed:
         case 0:
             try:
-                conn = mysql.connect(user="root",
-                                     password="pass",
-                                     #    wrong IP as a bug
-                                     host="192.168.1.61",
-                                     port=3306,
-                                     database="employees")
+                mysql.connect(user="root",
+                              password="pass",
+                              #    wrong IP as a bug
+                              host="192.168.1.61",
+                              port=3306,
+                              database="employees")
             except mysql.Error as e:
                 print(f"ERROR!: {e}")
                 sleep(3)
@@ -80,7 +80,7 @@ def buggyJob(seed=2):
                 # Get Cursor
                 cur = conn.cursor()
 
-                cur.execute("SELECT first_name, last_name FROM wrongtable")
+                cur.execute("SELECT first_name, last_name FROM wrongTable")
             except mysql.Error as e:
                 print(f"ERROR!: {e}")
                 sleep(3)
@@ -95,7 +95,7 @@ def buggyJob(seed=2):
                 # Get Cursor
                 cur = conn.cursor()
 
-                cur.execute("SELECT first_name, wrongcolumn FROM employees")
+                cur.execute("SELECT first_name, wrongColumn FROM employees")
             except mysql.Error as e:
                 print(f"ERROR!: {e}")
                 sleep(3)
@@ -119,7 +119,7 @@ def buggyJob(seed=2):
 def work():
     dummy = 0
     print("WORKING...")
-    for i in tqdm.tqdm(range(0, 5000000)):
+    for _ in tqdm.tqdm(range(0, 5000000)):
         dummy = dummy * 5
     print("Done working, querying now...")
 
@@ -127,23 +127,25 @@ def work():
 counter = 0
 timestamps = []
 
-while (True):
+timeSwitch = time.time() + 30
+while time.time() <= timeSwitch:
+    normalJob(random.randint(0, 9))
 
-    timeSwitch = time.time() + 30
+print("Switching")
 
-    while (time.time() <= timeSwitch):
+t_end = time.time() + 60 * 60 * 6
+
+while time.time() < t_end:
+    if random.randint(0, 10) == 5:
+
+        buggyJob(random.randint(0, 3))
+        # After an anomaly the program sleeps for 40 seconds as a means of recovery
+
+        timestamps.append(time.strftime("%H:%M:%S", time.localtime()))
+        print(timestamps, len(timestamps))
+        sleep(40)
+        counter += 1
+    else:
         normalJob(random.randint(0, 9))
 
-    print("Switching")
-
-    for k in range(0, 200):
-        if (random.randint(0, 10) == 5):
-
-            timestamps.append(time.strftime("%H:%M:%S", time.localtime()))
-            print(timestamps, len(timestamps))
-            buggyJob(random.randint(0, 3))
-            # After an anomaly the program sleeps for 40 seconds as a means of recovery
-            sleep(40)
-            counter += 1
-        else:
-            normalJob(random.randint(0, 9))
+print("BUGGED", len(timestamps), "times.")
